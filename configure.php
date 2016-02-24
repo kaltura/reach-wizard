@@ -23,21 +23,21 @@ if(isset($_POST['auto_transcribe'])){
 
 exec("php reach.php ". $_POST['ks'],$ret,$rc);
 if($rc !== 0){
-	echo "$ret</br>";
+	echo "$ret<br />";
 }
 
 $form='
   <div class="content">
+<div class="row">
+<div class="col-md-12">
 <h1>CONFIGURATION</h1>
 
 <form id="cat_form" action="mapCats.php" method="post">
 <input type="hidden" id="partner_id" name="partner_id" value="'.$_POST['partner_id'].'">
 <input type="hidden" id="auto_transcribe" name="auto_transcribe" value="'.$auto_transcribe.'">
 <input type="hidden" id="trigger" name="trigger" value="'.$trigger.'">
-<div class="row">
-<div class="col-sm-6">
 ';
-$msg="<h4>Requested captions are:</h4>";
+$msg="<h3>The transcription triggers that will be configured:</h3>";
 if ($trigger === 'category'){
 	require_once('KalturaGeneratedAPIClientsPHP/KalturaClient.php');
 	require_once('options.php');
@@ -50,8 +50,12 @@ if ($trigger === 'category'){
 	$result = $client->category->listAction($filter, $pager);
 	$selectbox_values='';
 	foreach($result->objects as $cat){
-		$selectbox_values.=" <option value=\"$cat->name\">$cat->name</option>";
+		//categories selectbox options
+		$selectbox_values.=" <option value=\"$cat->fullName ($cat->id)\">$cat->fullName ($cat->id)</option>";
 	}
+}
+if ($trigger === 'tag'){
+	$msg.= "<ul>";
 }
 $error_langs=array();
 if(!empty($_POST['ctat'])){
@@ -59,8 +63,10 @@ if(!empty($_POST['ctat'])){
 		foreach($_POST['lang'] as $lang){
 			if ($lang === 'english'){
 				$trans_id="caption$ctat";
+				$trans_id_cat='caption_'.$lang."_".$ctat;
 			}else{
 				$trans_id="caption$lang$ctat";
+				$trans_id_cat='caption_'.$lang."_".$ctat;
 			}
 			if (!stristr($ctat,'asr')){
 				$trans_type='human';
@@ -73,27 +79,28 @@ if(!empty($_POST['ctat'])){
 				}
 			}
 			if ($trigger === 'tag'){
-				$msg.= "$trans_id - Will execute $trans_type transcription for ".ucfirst($lang)." spoken video</br>";
+				$msg.= "<li><strong>$trans_id</strong> - Will execute <strong>$trans_type $ctat</strong> transcription for <strong>".ucfirst($lang)."</strong> spoken video</li>";
 			}else{
 				$form.="<div class=\"form-group valid-row\">
-				<label for=\"$trans_id\">Choose a category for $trans_type $ctat transcription for ".ucfirst($lang)." spoken video:<span class=\"required\"> *</span></label>
-
-				<select id=\"$trans_id\" name=\"$trans_id\" class=\"form-control select\">$selectbox_values</select>
-				</div>
-				";
+				<label for=\"$trans_id_cat\">Choose a category for $trans_type $ctat transcription for ".ucfirst($lang)." spoken video:<span class=\"required\"> *</span></label>
+				<select id=\"$trans_id_cat\" name=\"$trans_id_cat\" class=\"form-control select\">$selectbox_values</select>
+				</div>";
 
 			}
 		}
 	}
 }
+if ($trigger === 'tag'){
+	$msg.= "</ul>";
+}
 $err_msg='';
 if(count($error_langs)){
 	$uniq_errors=array_unique($error_langs);
-	$err_msg="<font color=\"red\"><b>The following languages are only available for Human transcription. Machine tags for these languages are not available:</br>";
+	$err_msg="<span style=\"color:red;font-weight:bold;\"><b>The following languages are only available for Human transcription.<br />Machine-transcription tags for these languages are not available:</span><ul>";
 	foreach ($uniq_errors as $err){
-		$err_msg.="$err</br>";
+		$err_msg.="<li>$err</li>";
 	}
-	$err_msg.='</font></b></br>';
+	$err_msg.='</ul><br />';
 }
 
 if ($trigger === 'tag'){
@@ -104,14 +111,14 @@ if ($trigger === 'tag'){
 		<div role="tabrole">
 			<form id="cat_form" action="mapCats.php" method="post">
 			<div class="row">
-			<div class="col-sm-6">
+			<div class="col-md-12">
 			<input type="hidden" id="partner_id" name="partner_id" value="'.$_POST['partner_id'].'">
 			<input type="hidden" id="auto_transcribe" name="auto_transcribe" value="'.$auto_transcribe.'">
 			<input type="hidden" id="trigger" name="trigger" value="'.$trigger.'">
 			<input type="hidden" id="conf_msg" name="conf_msg" value="'.$msg.'">
-			<h4>'.$msg.'</h4></br>'.$err_msg.'
+			<h4>'.$msg.'</h4><br />'.$err_msg.'
 			<div class="form-group valid-row">
-				<label for="email">E-mail address: <span class="required">*</span></label>
+				<label for="email">Your E-mail address (you will be CC on the activation email): <span class="required">*</span></label>
 				<input id="user_email" name="user_email"  type="text" class="form-control required">
 			</div>
 			<input id="submit" name="submit" type="submit" class="btn btn-default" value="SUBMIT">
@@ -127,13 +134,13 @@ if ($trigger === 'tag'){
 	<div class="btn-holder">';
 	echo $err_msg.'
 	<div class="form-group valid-row">
-		<label for="email">E-mail address: <span class="required">*</span></label>
+		<label for="email">Your E-mail address (you will be CC on the activation email): <span class="required">*</span></label>
 		<input id="user_email" name="user_email"  type="text" class="form-control required">
 	</div>
 	<input id="submit" name="submit" type="submit" class="btn btn-default" value="SUBMIT">
-	</div>
 
 	</div></div></form>';
 }
-echo "</body></html>";
-
+?>
+</body>
+</html>

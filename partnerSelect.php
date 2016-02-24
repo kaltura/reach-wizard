@@ -13,4 +13,3 @@
 	</select>
 </div>
 <br/>
-<img src="lib/loginLoader.gif" id="partnerLoader" style="display: none;">

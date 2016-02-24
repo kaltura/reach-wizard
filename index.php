@@ -55,14 +55,12 @@ require_once('options.php');
 	}
 	function partnerSubmit() {
 		$('#sumbitPartner').hide();
-		$('#partnerLoader').show();
 		var login_type=document.getElementById("login_type").value;
 		$.ajax({
 			type: "POST",
 			url: "getSession.php",
 			data: {email: $('#email').val(), partnerId: $('#partnerChoice').val(), password: $('#password').val(), login_type: login_type}
 		}).done(function(msg) {
-			$('#partnerLoader').hide();
 			if(msg === "loginfail") {
 				document.getElementById("note").innerHTML="Invalid username or password.";
 				$('#loginButton').show();
@@ -131,11 +129,11 @@ require_once('options.php');
 		function () {
 		    var login_type = $('option:selected', this).val();
 		    if (login_type == "email_passwd") {
-			$('#username').text("Email Address: *");
-			$('#password_label').text("Password: *");
+				$('#username').text("Email Address: *");
+				$('#password_label').text("Password: *");
 		    } else if (login_type == "partner_id_secret") {
-			$('#username').html("Partner ID: *");
-			$('#password_label').html("Admin Secret: *");
+				$('#username').html("Partner ID: *");
+				$('#password_label').html("Admin Secret: *");
 		    }
 		});
 	 });  
@@ -143,47 +141,51 @@ require_once('options.php');
 </head>
 <body class="page">
 			<div id="mainf" style="display: none;">
-			<form method="post" action="configure.php">
-			<input type="hidden" id="ks" name="ks">
-			<input type="hidden" id="partner_id" name="partner_id">
-			<h4>This tool helps setup up and configure a new REACH account for KMC based workflow.</h4> 
-			<h4>Setup should be according to what was purchased in the contract, any different setting will result in monthly overages.</h4>
-			<h4 >For questions, please contact your Kaltura representative or email reach@kaltura.com</a></h4>
-			</br>
+			<div class="content">
+			<div class="row">
+			<div class="col-md-12">
+				<form method="post" action="configure.php">
+				<input type="hidden" id="ks" name="ks">
+				<input type="hidden" id="partner_id" name="partner_id">
+				<h1>Kaltura REACH - KMC Workflow setup</h1>
+				<p>This tool helps setup up and configure a new REACH account for KMC based workflow.</p>
+				<p>Setup should be according to what was purchased in the contract, any different setting will result in monthly overages. <br />
+	 			For questions, please contact your Kaltura representative or email reach@kaltura.com</p>
 
-			<h4 >Chose your desired Transcription turn-around-time (the time from start until captions are available in KMC):</h4>
-			</br>
-			</br>
-			<?php
-				foreach ($captions_turn_around_time as $key=>$val){
-				   echo "<input type=\"checkbox\" name=\"ctat[]\" value=\"$key\">$val <br>";
-				}
-			?>
-			</br>
-				<h4 >Chose the languages spoken in your videos (note the supported services next to each language):</h4>
-			</br>
-			<?php
-				foreach ($captions_lang as $key=>$val){
-				   echo "<input type=\"checkbox\" name=\"lang[]\" value=\"$key\">".ucfirst($key). ' - ' . implode(" and ", $val).' <br>';
-				}
-			?>
-			</br>
-			<label><h4 >Chose the trigger that will execute transcription of entries:</h4>
-			</br>
-			<?php
-				foreach ($triggers as $key=>$val){
-				   echo "  <input type=\"radio\" name=\"trigger\" value=\"$key\" > $val <br>";
-				}
-			?>
-			</br>
-			</br>
-			<h4 >Should entries be machine-transcribed automatically upon upload?</h4>
-			</br>
-			<input type="radio" name="auto_transcribe" value="1">Yes <br>
-			<input type="radio" name="auto_transcribe" value="0">No <br>
-			</br>
-			<input type="submit" id=finButton class="btn btn-default" value="Next" >
-			</form>
+				<h4>Chose the desired Transcription turn-around-time</h4> 
+				<p>(Turn-Around-Time is the time from when the transcription job starts until captions are available in KMC)</p>
+				<?php
+					foreach ($captions_turn_around_time as $key=>$val){
+					   echo "<input type=\"checkbox\" id=\"cboxtat_$key\" name=\"ctat[]\" value=\"$key\"><label for=\"cboxtat_$key\">$val</label><br />";
+					}
+				?>
+				
+				<h4>Chose the languages spoken in the videos</h4>
+				<p>Please note the supported services next to each language</p>
+				<?php
+					foreach ($captions_lang as $key=>$val){
+					   echo "<input type=\"checkbox\" id=\"cboxlang_$key\" name=\"lang[]\" value=\"$key\"><label for=\"cboxlang_$key\">".ucfirst($key). ' - ' . implode(" and ", $val).'</label><br />';
+					}
+				?>
+				
+				<h4>Chose the trigger that will execute transcription of entries:</h4>
+				<p>It is highly recommended to use tags as triggers</p>
+				<?php
+					foreach ($triggers as $key=>$val){
+					   echo "  <input type=\"radio\" id=\"radtrig_$key\" name=\"trigger\" value=\"$key\"><label for=\"radtrig_$key\">$val</label><br />";
+					}
+				?>
+				<br />
+				<h4>Should entries be <strong>machine</strong>-transcribed automatically upon upload?</h4>
+				<p>If Yes is chosen here, every new entry that will be status=READY will be automatically transcribed using English machine speech to text.<br />
+				Note: Automatic transcription is currently only available for English speaking entries.</p>
+				<input type="radio" id="radauto_1" name="auto_transcribe" value="1"><label for="radauto_1">Yes</label><br />
+				<input type="radio" id="radauto_0" name="auto_transcribe" value="0"><label for="radauto_0">No</label><br />
+				<input type="submit" id=finButton class="btn btn-default" value="Next" >
+				</form>
+				</div>
+				</div>
+				</div>
 			</div>
 		        <div id="wrapper">
                         <div class="w1">
@@ -192,7 +194,7 @@ require_once('options.php');
 				<div role="tabrole">
 				<form method="post" id="loginForm" action="javascript:loginSubmit();" >
 				<div class="row">
-				<div class="col-sm-6">
+				<div class="col-md-12">
 
 					<h1>REACH Configuration Wizard</h1>
 					<p id="description" style="padding-bottom:10px;">Login to your Kaltura account to proceed</p>
@@ -216,8 +218,9 @@ require_once('options.php');
 					</div>
 					<div id="partnerLogin" style="display: none;"></div>
 					<span class="error note" id="note"></span>
+					<img src="lib/loginLoader.gif" id="loginLoader" style="display: none;">
 					<div class="btn-holder">
-					<input type="submit" id=submitButton class="btn btn-default" value="LOGIN">
+						<input type="submit" id=submitButton class="btn btn-default" value="LOGIN">
 					</div>
 				</fieldset>	
 				</div>

@@ -1,27 +1,43 @@
 <html>
 <head>
-<title>REACH configuration summary</title>
+<title>Kaltura REACH KMC Workflow configuration summary</title>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/all.css">
 </head>
 <body>
+<div class="content">
+<div class="row">
+<div class="col-md-12">
 <?php
 require_once('options.php');
 $trigger=$_POST['trigger'];
-$msg_header="<h2>Below is the required $trigger configuration for partner ID: ". $_POST['partner_id'].".</h2>";
+$msg_header="<h2>Kaltura REACH KMC Workflow configuration summary</h2>";
+$msg_header.="<h3>For Kaltura Account partnerId: ". $_POST['partner_id'].".</h3>";
+$msg_header.="<h4>Chosen transcription triggers:</h4><ul>";
+$msg_header.="<li>".($trigger==="category"?"categories":"tags")." based workflow</li>";
 if ($_POST['auto_transcribe']){
-	$msg_header.="<h4>Entries should be auto transcribed.</h4>";
+	$msg_header.="<li>All newly uploaded entries will be automatically machine transcribed.</li>";
 }
-echo "<h4>$msg_header</h4></br>";
+$msg_header.="</ul>";
+echo "<h3>$msg_header</h3>";
 if ($trigger === 'category'){
+	$msg.="<h4>Chosen transcription categories:</h4><ul>";
 	foreach($_POST as $key => $val){
 		if (strstr($key,'caption')){
-			$msg.=$key.' => ' .$val.'</br>';
+			$keyarr = explode("_", $key);
+			$captionkey = ucfirst($keyarr[1]).' '.($keyarr[2]=='asr'?'machine':$keyarr[2]);
+			$msg.='<li><strong>'.$captionkey.'</strong> by adding entries to category: <strong>'.$val.'</strong></li>';
 		}
 	}
+	$msg.="</ul>";
 }else{
 	$msg=$_POST['conf_msg'];
 }
-echo "$msg</br><h4>An email was sent to $to and ". $_POST['user_email'].'</h4></body></html>';
+echo "$msg</br><h3>An email was sent to $to and ". $_POST['user_email'].'</h3>';
 mail ($to.','.$_POST['user_email'],$subject,$msg_header.$msg,$headers);
 ?>
+</div>
+</div>
+</div>
+</body>
+</html>
