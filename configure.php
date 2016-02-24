@@ -86,14 +86,15 @@ if(!empty($_POST['ctat'])){
 		}
 	}
 }
-
-$uniq_errors=array_unique($error_langs);
-$err_msg="<font color=\"red\"><b>The following languages are only available for Human transcription. Machine tags for these languages are not available:</br>";
-foreach ($uniq_errors as $err){
-	$err_msg.="$err</br>";
+$err_msg='';
+if(count($error_langs)){
+	$uniq_errors=array_unique($error_langs);
+	$err_msg="<font color=\"red\"><b>The following languages are only available for Human transcription. Machine tags for these languages are not available:</br>";
+	foreach ($uniq_errors as $err){
+		$err_msg.="$err</br>";
+	}
+	$err_msg.='</font></b></br>';
 }
-$err_msg.='</font></b></br>';
-
 
 if ($trigger === 'tag'){
 	echo '<div id="wrapper">
