@@ -33,8 +33,11 @@ if ($trigger === 'category'){
 }else{
 	$msg=$_POST['conf_msg'];
 }
-echo "$msg</br><h3>An email was sent to $to and ". $_POST['user_email'].'</h3>';
-mail ($to.','.$_POST['user_email'],$subject,$msg_header.$msg,$headers);
+if(isset($_POST['user_email'])){
+	$to.=','.$_POST['user_email'];
+}
+echo "$msg</br><h4>An email was sent to $to </h4></body></html>";
+mail ($to,$subject,$msg_header.$msg,$headers);
 ?>
 </div>
 </div>
