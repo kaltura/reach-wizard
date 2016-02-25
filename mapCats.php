@@ -5,11 +5,15 @@
 <link rel="stylesheet" href="css/all.css">
 </head>
 <body>
-<div class="content">
-<div class="row">
-<div class="col-md-12">
 <?php
 require_once('options.php');
+require_once('headers.inc');
+echo HTML_HEADER;
+?>
+<div class="content">
+<div class="col-md-12">
+<div class="row">
+<?php
 $trigger=$_POST['trigger'];
 $msg_header="<h2>Kaltura REACH KMC Workflow configuration summary</h2>";
 $msg_header.="<h3>For Kaltura Account partnerId: ". $_POST['partner_id'].".</h3>";

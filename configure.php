@@ -10,6 +10,8 @@
 var_dump($_POST);
 echo "</pre>";*/
 require_once('options.php');
+require_once('headers.inc');
+echo HTML_HEADER;
 if(isset($_POST['trigger'])){
 	$trigger=$_POST['trigger'];
 }else{
