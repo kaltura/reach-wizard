@@ -37,7 +37,7 @@ $form='
 <input type="hidden" id="auto_transcribe" name="auto_transcribe" value="'.$auto_transcribe.'">
 <input type="hidden" id="trigger" name="trigger" value="'.$trigger.'">
 ';
-$msg="<h3>The transcription triggers that will be configured:</h3>";
+$msg="<h4>The transcription triggers that will be configured:</h4>";
 if ($trigger === 'category'){
 	require_once('KalturaGeneratedAPIClientsPHP/KalturaClient.php');
 	require_once('options.php');
