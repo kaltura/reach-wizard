@@ -98,7 +98,7 @@ if ($trigger === 'tag'){
 $err_msg='';
 if(count($error_langs)){
 	$uniq_errors=array_unique($error_langs);
-	$err_msg="<span style=\"color:red;font-weight:bold;\"><b>The following languages are only available for Human transcription.<br />Machine-transcription tags for these languages are not available:</span><ul>";
+	$err_msg="<span style=\"color:red;font-weight:bold;\"><b>The following languages are not currently available for machine speech to text transcription:</span><ul>";
 	foreach ($uniq_errors as $err){
 		$err_msg.="<li>$err</li>";
 	}
@@ -120,7 +120,8 @@ if ($trigger === 'tag'){
 			<input type="hidden" id="conf_msg" name="conf_msg" value="'.$msg.'">
 			<h4>'.$msg.'</h4><br />'.$err_msg.'
 			<div class="form-group valid-row">
-				<label for="email">Your E-mail address (you will be CC on the activation email): <span class="required">*</span></label>
+				<label for="email">Please enter any email addresses (separated by commas) that you’d like this
+    summary to be sent to as CC:<span class="required">*</span></label>
 				<input id="user_email" name="user_email"  type="text" class="form-control required">
 			</div>
 			<input id="submit" name="submit" type="submit" class="btn btn-default" value="SUBMIT">
