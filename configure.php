@@ -120,7 +120,7 @@ if ($trigger === 'tag'){
 			<input type="hidden" id="conf_msg" name="conf_msg" value="'.$msg.'">
 			<h4>'.$msg.'</h4><br />'.$err_msg.'
 			<div class="form-group valid-row">
-				<label for="email">Please enter any email addresses (separated by commas) that you’d like this
+				<label for="email">Please enter any email addresses (separated by commas) that you\'d like this
     summary to be sent to as CC:<span class="required">*</span></label>
 				<input id="user_email" name="user_email"  type="text" class="form-control required">
 			</div>

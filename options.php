@@ -22,7 +22,7 @@ $captions_lang = array(
 'japanese'=>array('Human'),
 'korean' => array('Human'),
 'mandarin'=> array('Human'),
-'portugue'=> array('Human'),
+'portuguese'=> array('Human'),
 'russian'=> array('Human'),
 'spanish'=> array('Human','Machine'),
 'chinese'=> array('Human'),
@@ -35,11 +35,9 @@ $triggers = array (
 'category'=>'Category based',
 );
 
-// email
-
 $subject='Kaltura REACH: New KMC Account Activation Request';
-$to='reach@kaltura.com';
-//$to='reach@kaltura.com,kaltura@cielo24.com';
+//$to='reach@kaltura.com';
+$to='reach@kaltura.com,kaltura@cielo24.com';
 //$to='jess.portnoy@kaltura.com';
 $headers = "From: Kaltura REACH <community@kaltura.com>\r\n";
 $headers .= "Reply-To: reach@kaltura.com,kaltura@cielo24.com\r\n";

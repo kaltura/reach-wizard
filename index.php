@@ -82,7 +82,8 @@ require_once('headers.inc');
 				$('#userLogin').hide();
 				$('#loginButton').hide();
 				$('#loginFooter').hide();
-				$('#loginForm').animate({width: "1000px", marginTop: "-130px"}, 400);
+				//$('#loginForm').animate({width: "1000px", marginTop: "-130px"}, 400);
+				$('#loginForm').hide();
 				//$('#page').slideDown();
 			}
 		});
@@ -116,7 +117,8 @@ require_once('headers.inc');
 					$('#userLogin').hide();
 					$('#loginButton').hide();
 					$('#loginFooter').hide();
-					$('#loginForm').animate({height: "500px", marginTop: "-130px"}, 400);
+					//$('#loginForm').animate({height: "500px", marginTop: "-130px"}, 400);
+					$('#loginForm').hide();
 					document.getElementById("ks").value = kalturaSession;
 					document.getElementById("partner_id").value = response[2];
 					$('#mainf').show();
@@ -158,7 +160,7 @@ require_once('headers.inc');
 								<p>Setup should be according to what was purchased in the contract, any different setting will result in monthly overages. <br />
 								For questions, please contact your Kaltura representative or email reach@kaltura.com</p>
 
-								<h4>Chose the desired Transcription turn-around-time</h4> 
+								<h4>Choose the desired Transcription turn-around-time</h4> 
 								<p>(Turn-Around-Time is the time from when the transcription job starts until captions are available in KMC)</p>
 								<?php
 									foreach ($captions_turn_around_time as $key=>$val){
@@ -166,7 +168,7 @@ require_once('headers.inc');
 									}
 								?>
 								
-								<h4>Chose the languages spoken in the videos</h4>
+								<h4>Choose the languages spoken in the videos</h4>
 								<p>Please note the supported services next to each language</p>
 								<?php
 									foreach ($captions_lang as $key=>$val){
@@ -174,7 +176,7 @@ require_once('headers.inc');
 									}
 								?>
 								
-								<h4>Chose the trigger that will execute transcription of entries:</h4>
+								<h4>Choose the trigger that will execute transcription of entries:</h4>
 								<p>It is highly recommended to use tags as triggers</p>
 								<?php
 									foreach ($triggers as $key=>$val){
