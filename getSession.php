@@ -1,4 +1,6 @@
 <?php
+//This script returns the list of partners to choose from on the account
+//and then generates a Kaltura session for the appropriate partner
 
 require_once('KalturaGeneratedAPIClientsPHP/KalturaClient.php');
 require_once('options.php');
@@ -11,7 +13,6 @@ if (isset($_REQUEST['login_type'])){
 }
 
 if ($login_type === 'email_passwd'){
-	// we're in our second phase, i.e: user already logged in with email and passwd and chose a partner ID from the selectbox presented to him.
 	if($partnerId != 0){
 		properKS($partnerId);
 	}else {
@@ -25,8 +26,10 @@ if ($login_type === 'email_passwd'){
 			$ks = $client->user->loginByLoginId($loginId, $password);
 			$client->setKs($ks);
 			$filter = null;
-			$pager = null;
-			$results = $client->partner->listPartnersForUser();
+			$pager = new KalturaFilterPager();
+			$pager->pageSize = 500;
+			$pager->pageIndex = 1;
+			$results = $client->partner->listPartnersForUser(null, $pager);
 			//If there is only one partner on the account, log in immediately
 			if($results->totalCount == 1)
 				properKS($results->objects[0]->id);
@@ -47,12 +50,8 @@ if ($login_type === 'email_passwd'){
 		}	
 	}
 }else{
-	// we already have a partner ID and secret, just use them
-	// POST params are still called email and passwd but we're deciding based on the value of login_type, which is taken from a selectbox
 	startSession($_POST['email'], $_POST['password']);
 }
-
-// regular 'simple' KS gen
 function startSession($partnerId,$secret) 
 {
 	try {
@@ -74,8 +73,7 @@ function startSession($partnerId,$secret)
 	}	
 }
 
-// when doing a user and passwd login, we need two passes, this is the second one:
-// Once a partner is selected, generate a Kaltura session
+//Once a partner is selected, generate a Kaltura session
 function properKS($partnerId) 
 {
 	$config = new KalturaConfiguration($partnerId);
