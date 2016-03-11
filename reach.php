@@ -1,5 +1,4 @@
 <?php
-// accepts a KS and, if not already in existance, creates the cielo24 role and user
 if (!isset($argv[1])){
     echo __FILE__ . 'Missing KS!';
     exit (1);
@@ -14,6 +13,7 @@ $filter = new KalturaUserRoleFilter();
 $filter->nameEqual = 'cielo24';
 $pager = null;
 $result = $client->userRole->listAction($filter, $pager);
+$logfile='/var/local/log/reach.log';
 if ($result->totalCount === 0){
 
 	$userRole = new KalturaUserRole();
@@ -30,9 +30,13 @@ if ($result->totalCount === 0){
 	$user->type = KalturaUserType::USER;
 	$user->screenName = 'kaltura@cielo24.com';
 	$user->fullName = 'REACH cielo24';
+	$user->isAdmin=1;
 	$user->email = 'kaltura@cielo24.com';
 	$user->status = KalturaUserStatus::ACTIVE;
 	$user->roleIds = $role_id;
 	$result = $client->user->add($user);
+	error_log(date('r')."\n",3,$logfile);
+	error_log(print_r($result,true),3,$logfile);
+	error_log($argv[1]."\n###################################################################################\n",3,$logfile);
 }
 ?>
