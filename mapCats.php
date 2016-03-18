@@ -18,7 +18,7 @@ $trigger=$_POST['trigger'];
 $msg_header="<h2>Kaltura REACH KMC Workflow configuration summary</h2>";
 $msg_header.="<h3>For Kaltura Account partnerId: ". $_POST['partner_id'].".</h3>";
 $msg_header.="<h4>Chosen transcription triggers:</h4><ul>";
-$msg_header.="<li>".($trigger==="category"?"categories":"tags")." based workflow</li>";
+$msg_header.="<li>".($trigger==="category"?"categories":"Start Tags")." based workflow</li>";
 if ($_POST['auto_transcribe']){
 	$msg_header.="<li>All newly uploaded entries will be automatically machine transcribed.</li>";
 }
@@ -35,7 +35,7 @@ if ($trigger === 'category'){
 	}
 	$msg.="</ul>";
 }else{
-	$msg=$_POST['conf_msg'];
+	$msg=$_POST['conf_msg'].'</br></br><span style="color:red;font-weight:bold;">Within 24 hours your account will be setup and you can enter the "Start Tags" noted above to requests transcriptions for your content</span>';
 }
 if(isset($_POST['user_email'])){
 	$to.=','.$_POST['user_email'];
